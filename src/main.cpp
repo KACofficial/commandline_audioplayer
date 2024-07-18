@@ -116,13 +116,32 @@ void print_help() {
 std::vector<std::string> splitAndRemoveQuotes(const std::string& input) {
     std::vector<std::string> tokens;
     std::string token;
+    bool in_quotes = false;
+    char quote_char = '\0';
 
-    std::stringstream ss(input);
-    while (ss >> std::quoted(token)) {
-        if (!token.empty() && (token.front() == '"' || token.front() == '\'') &&
-            token.front() == token.back()) {
-            token = token.substr(1, token.size() - 2);
+    for (char c : input) {
+        if (in_quotes) {
+            if (c == quote_char) {
+                in_quotes = false;
+            } else {
+                token += c;
+            }
+        } else {
+            if (c == '"' || c == '\'') {
+                in_quotes = true;
+                quote_char = c;
+            } else if (c == ' ') {
+                if (!token.empty()) {
+                    tokens.push_back(token);
+                    token.clear();
+                }
+            } else {
+                token += c;
+            }
         }
+    }
+
+    if (!token.empty()) {
         tokens.push_back(token);
     }
 
