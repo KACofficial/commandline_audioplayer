@@ -15,7 +15,7 @@ int main() {
     std::cout << "Welcome!" << std::endl;
     print_help();
     sf::Music music;
-    while (1) { 
+    while (1) {
         char* command = readline(">> ");
         // char* c_file = nullptr;
         if (!command) {
